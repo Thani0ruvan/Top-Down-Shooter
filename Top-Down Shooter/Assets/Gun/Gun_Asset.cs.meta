@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 0a94108c8cedf794a97ed6e48d3ad4d6
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - Gun_Sprite: {instanceID: 0}
+  - Bullet_Sprite: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
