@@ -5,6 +5,7 @@ using MyClass;
 
 public class Enemy : MonoBehaviour
 {
+
     #region Data
     [SerializeField]EnemySO MyData;
 
@@ -12,6 +13,9 @@ public class Enemy : MonoBehaviour
     int Health;
     int HitPoints;
     float Speed;
+
+    Animator anim;
+    [SerializeField]LayerMask PlayerLayer;
 
     void SetData()
     {
@@ -45,13 +49,16 @@ public class Enemy : MonoBehaviour
     Rigidbody2D myrb;
     Rigidbody2D playerrb;
    
-    IEnumerator EnemyMeleeAttack()
-    {
-        yield return new WaitForSeconds(2f);
-        Collider2D PlayerToAttack = Physics2D.OverlapCircle(myrb.position, 5f);
 
-        if (PlayerToAttack.GetComponent<PlayerHealthSystem>() != null )
-        {
+   
+    void TriggerAttack()
+    {
+        Collider2D PlayerToAttack = Physics2D.OverlapCircle(myrb.position, 5f, PlayerLayer);
+
+        if (PlayerToAttack != null)
+        { 
+            PlayerHealthSystem playerHealthSystem = PlayerToAttack.GetComponent<PlayerHealthSystem>();
+            Debug.Log("Attack");
             PlayerHealthSystem PlayerHealth = PlayerToAttack.GetComponent<PlayerHealthSystem>();
             PlayerHealth.TakeDamage(HitPoints);
         }
@@ -69,6 +76,8 @@ public class Enemy : MonoBehaviour
 
         //follow and Melee
         myrb = GetComponent<Rigidbody2D>();
+
+        anim = GetComponent<Animator>();
          }
     private void Start()
     {
@@ -79,14 +88,16 @@ public class Enemy : MonoBehaviour
     void Update()
     {
 
-
-        if (Vector2.Distance(myrb.position, playerrb.position) < 4f)
+        if (Vector2.Distance(myrb.position, playerrb.position) > 4f)
         {
-            EnemyMeleeAttack();
-        }
-        
+
             myrb.position = Movement.MoveTo(myrb, playerrb, Speed * 0.01f);
-       
+        }
+        else 
+        {
+            anim.SetTrigger("IsAttack");
+
+        }
     }
 
    
