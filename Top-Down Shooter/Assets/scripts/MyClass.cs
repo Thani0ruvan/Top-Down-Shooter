@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+
 namespace MyClass 
 {
    class AI
@@ -13,10 +14,17 @@ namespace MyClass
 
     class Movement
     {
- 
         public static Vector2 MoveTo(Rigidbody2D source,Rigidbody2D target,float speed)
         {
            return Vector2.MoveTowards(source.position, target.position, speed);
+        }
+
+        public static float AimTo(Vector2 origin,Vector2 PointToAim ,float Offset=0)
+        {
+            Vector2 lookDir = PointToAim - origin;
+            float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
+            float AimAngle = angle + Offset;
+            return AimAngle;
         }
     }
     class Maths

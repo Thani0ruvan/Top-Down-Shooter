@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Enemy
   m_EditorClassIdentifier: 
   enemytype: 0
-  Health: 100
+  Health: 50
   HitPoints: 10
   Speed: 10

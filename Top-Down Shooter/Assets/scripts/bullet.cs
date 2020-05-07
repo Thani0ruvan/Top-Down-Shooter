@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         Destroy(gameObject);
-        if (collision.gameObject.GetComponent<Enemy>()!=null)
+        if (other.gameObject.GetComponent<Enemy>()!=null)
         {
-            collision.gameObject.GetComponent<Enemy>().TakeDamage(10);
+            other.gameObject.GetComponent<Enemy>().TakeDamage(10);
         }
     }
 }

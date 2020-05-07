@@ -4,6 +4,14 @@ using UnityEngine;
 using System;
 public class Gun : MonoBehaviour
 {
+
+    enum State
+    {
+        Shooting,
+        Reloading
+    }
+    State CurrentState;
+
     [SerializeField] Gun_Asset my_gun;
     [SerializeField] Animator anim;
 
@@ -11,7 +19,7 @@ public class Gun : MonoBehaviour
     public Transform BulletSpawnpoint;
     Transform GunPosition;
 
-    
+
     int MaxBullet;
     int RemainingBullet;
 
@@ -23,19 +31,21 @@ public class Gun : MonoBehaviour
     float ReloadTime;
     float ResetReloadTime;
 
-     string StartingGun;
-     string EndingGun;
+    string StartingGun;
+    string EndingGun;
 
-    
+
     private void Awake()
     {
+        CurrentState = State.Shooting;
+
         StartingGun = my_gun.GunName();
         EndingGun = StartingGun;
 
-         }
+    }
     void Start()
     {
-        
+
 
         SetGun();
         StartCoroutine(SetAnim());
@@ -47,31 +57,51 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(my_gun.GunType() + "_Eq");
-       
+        Debug.Log(my_gun.GunType() + "Eq");
+        anim.SetBool(my_gun.GunType() + "Eq", true);
 
-         StartingGun = my_gun.GunName();
+        StartingGun = my_gun.GunName();
         if (StartingGun != EndingGun) { SetGun(); StartCoroutine(SetAnim()); SetGunValue(); }
 
-            transform.position = GameObject.Find(my_gun.GunType()+"_SpawnPoint").transform.position;
+        switch (CurrentState)
+        {
+            case State.Shooting:
 
-        if (Input.GetMouseButton(0)) Shoot();
+
+                transform.position = GameObject.Find(my_gun.GunType() + "_SpawnPoint").transform.position;
+
+                if (Input.GetMouseButton(0)) Shoot();
+
+
+                if (BulletTimeGap > 0)
+                {
+                    BulletGap();
+                }
+
+
+                 if (RemainingBullet <= 0)
+                {
+                    StartCoroutine(Reload());
+                }
+               
+
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    StartCoroutine( Reload());
+                }
+                break;
+
 
          
-        if (BulletTimeGap > 0)
-        {
-            BulletGap();
+              
         }
+    
+              
 
-
-        if (RemainingBullet <= 0)
-        {
-            Reload();
-        }
 
         EndingGun = my_gun.GunName();
         if (StartingGun != EndingGun) { SetGun(); StartCoroutine(SetAnim()); SetGunValue(); }
-       
+
     } 
     void SetGun()
     {
@@ -95,7 +125,7 @@ public class Gun : MonoBehaviour
         ResetReloadTime = ReloadTime;
     }
 
-    IEnumerator SetAnim() {
+   public IEnumerator SetAnim() {
 
         anim.SetBool("Idle",true);
 
@@ -103,7 +133,7 @@ public class Gun : MonoBehaviour
 
         anim.SetBool("Idle",false);
 
-        anim.SetTrigger(my_gun.GunType() + "_Eq");
+        
 
 
     }
@@ -138,16 +168,15 @@ public class Gun : MonoBehaviour
 
     }
 
-    void Reload()
+    IEnumerator Reload()
     {
-        if (ReloadTime > 0)
-        {
-            ReloadTime -= Time.deltaTime;
-        }
-        else
-        {
+        CurrentState = State.Reloading;
+
+        yield return new WaitForSeconds(ReloadTime);
+       
+
             RemainingBullet = MaxBullet;
-            ReloadTime = ResetReloadTime;
-        }
+            CurrentState = State.Shooting;
+        
     }
 }

@@ -22,7 +22,11 @@ public class Lighter : MonoBehaviour
     {
        RaycastHit2D[] rch = Physics2D.CircleCastAll(transform.position, radius, Vector2.right);
 
-        AddList(rch,rchList);
+        foreach (RaycastHit2D t in rch)
+        {
+            rchList.Add(t);
+        }
+    
     
         for(int i = 0; i < rchList.Count; i++)
         {
@@ -41,11 +45,5 @@ public class Lighter : MonoBehaviour
         }
     }
 
-    void AddList<T>(T[] raycast ,List<T> list)
-    {
-        foreach(T t in raycast)
-        {
-            list.Add(t);
-        }
-    }
+    
 }

@@ -41,7 +41,17 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("Im Died");
+        Debug.Log("Im Enemy Died");
+
+        SpawnEnemy.GetInstance().EnemyAliveList.Remove(this);
+
+        //  this.GetComponent<SpriteRenderer>().enabled = false;
+        //  this.gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        //  this.GetComponent<CircleCollider2D>().enabled = false;
+
+        this.gameObject.SetActive(false);
+
+        this.enabled = false;
     }
     #endregion
     #region Melee
@@ -65,7 +75,13 @@ public class Enemy : MonoBehaviour
     }
 
     #endregion
+    #region AimPlayer
+    void AimPlayer()
+    {
 
+    }
+
+    #endregion
     void Awake()
     {   
         //Data
@@ -98,6 +114,8 @@ public class Enemy : MonoBehaviour
             anim.SetTrigger("IsAttack");
 
         }
+
+        myrb.rotation=MyClass.Movement.AimTo(myrb.position, playerrb.position, 0);
     }
 
    
