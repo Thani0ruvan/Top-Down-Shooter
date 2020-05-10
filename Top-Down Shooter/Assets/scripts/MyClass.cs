@@ -43,6 +43,10 @@ namespace MyClass
                 if (n < 0) n += 360;
                 return n;
             }
+            public static float Rand(float MinValue, float MaxValue)
+            {
+                return Random.Range(MinValue, MaxValue);
+            }
         }
     }
     class text

@@ -17,6 +17,8 @@ public class SpawnEnemy : MonoBehaviour
     public List<Enemy> EnemyAliveList;
 
     public static SpawnEnemy _instance;
+
+    public GameObject bloodEff;
     private void Awake()
     {
 

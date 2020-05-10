@@ -29,6 +29,7 @@ public class Enemy : MonoBehaviour
     [Header("HealthSystem",order =1)]
     int MyMaxHealth;
     int MyHealth;
+   
 
     public void TakeDamage(int damage)
     {
@@ -44,6 +45,9 @@ public class Enemy : MonoBehaviour
         Debug.Log("Im Enemy Died");
 
         SpawnEnemy.GetInstance().EnemyAliveList.Remove(this);
+
+
+        Instantiate(SpawnEnemy.GetInstance().bloodEff, transform.position+new Vector3(0,0,0),Quaternion.identity);
 
         //  this.GetComponent<SpriteRenderer>().enabled = false;
         //  this.gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
